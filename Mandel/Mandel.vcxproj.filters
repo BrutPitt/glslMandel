@@ -18,7 +18,7 @@
     <ClCompile Include="..\glad\glad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Mandelf.cpp">
+    <ClCompile Include="..\Mandeld_fullColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
