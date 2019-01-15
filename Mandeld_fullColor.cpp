@@ -55,19 +55,19 @@
 "                                                                                       \n"\
 "vec3 colorFunc(float iter, float zx)                                                   \n"\
 "{                                                                                      \n"\
-"vec3 abcVec = vec3(105., 125., 5.);	                                                \n"\
-"float rmaj = 122.;                                                                     \n"\
-"float rmin = 317.;                                                                     \n"\
+"vec3 abcVec = vec3(105.0, 125.0, 5.0);	                                                \n"\
+"float rmaj = 122.0;                                                                     \n"\
+"float rmin = 317.0;                                                                     \n"\
 "float g = 33.0; //+180.; invert r <-> b ... whit q                                     \n"\
 "float h = -33.0;                                                                       \n"\
 "float q = 28.79;//+270.;                                                               \n"\
 "float uK = log(log(sqrBailoutRadius));                                                 \n"\
-"float Iter = 256;                                                                      \n"\
+"float Iter = 256.0;                                                                    \n"\
 "	                                                                                    \n"\
 "float pi=M_PI;                                                                         \n"\
 "	                                                                                    \n"\
-"float vK = 1./log(2.); // (2 is the degree of the rational function)                   \n"\
-"float dens = 25;  // (density of the colours)                                          \n"\
+"float vK = 1.0/log(2.0); // (2 is the degree of the rational function)                   \n"\
+"float dens = 25.0;  // (density of the colours)                                          \n"\
 "float disp = 315.0; // (displacement of the colour scale)                              \n"\
 "                                                                                       \n"\
 "vec3 uvwVec = vec3(cos(g * pi / 180.) * cos(h * pi / 180.),                            \n"\
