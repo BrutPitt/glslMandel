@@ -19,7 +19,7 @@ or
 
 `clang -I. -lglfw -ld -lGL Mandel[d|f].cpp glad/glad.cpp`
 
-For **OS X** users, need to add `-D_OPENGL_4_1_` flag (OS X do not support OpenGL 4.5)
+For **OS X** users, need to add `-D_OPENGL_4_1_` flag (OS X do not supports OpenGL 4.5)
 
 **Windows** users can use the VisualStudio project attached
 
@@ -29,7 +29,9 @@ Simple version: https://michelemorrone.eu/WebGL/glslMandel/Mandel.html
 
 More complex with logarithmic smooth coloring: https://michelemorrone.eu/WebGL/glslMandelColor/Mandel.html
 
-![](https://raw.githubusercontent.com/BrutPitt/glslMandel/master/screenShots/Mandel.jpg)
+
+|![](https://raw.githubusercontent.com/BrutPitt/glslMandel/master/screenShots/Mandel.jpg)|![](https://raw.githubusercontent.com/BrutPitt/glslMandel/master/screenShots/Mandel2.jpg)|
+| --- | --- |
 
 To run need a browser that have **WebGL2** & **WebAssembly** features.
 Currently only FireFox or Chromium based browser (Chrome, Opera, Vivaldi, etc) supports it, in case of problems check for latest version or download a portable version.
