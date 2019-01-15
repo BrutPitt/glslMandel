@@ -116,64 +116,6 @@
 "   color = vec4(colorFunc(clr, dot(fZ,fZ)),1.0);                         \n"\
 "}                                                                        \n"\
 
-#include <iostream>
-using namespace std;
-void getCompilerLog(GLuint handle, GLint blen, bool isShader)
-{
-//if (!useGLSL) return aGLSLStrings[0];
-
-    GLint len;
-    GLchar* compilerLog;
-
-    //if (ShaderObject==0) return aGLSLStrings[1]; // not a valid program object
-
-
-    if (blen > 1) {
-        compilerLog = new GLchar[blen];
-
-        if(compilerLog!=NULL) {
-            if(isShader) glGetShaderInfoLog( handle, blen, &len, compilerLog );
-            else         glGetProgramInfoLog( handle, blen, &len, compilerLog );
-
-            cout << compilerLog << "\n" << endl;
-
-            delete compilerLog;
-        } else cout << "Could not allocate InfoLog buffer\n" << endl;
-
-        //cout << "compiler_log: \n", compiler_log);
-    }
-}
-
-void checkShader(GLuint shader)
-{
-	GLint compiled;
-    glGetShaderiv( shader, GL_COMPILE_STATUS, &compiled );
-
-    if(compiled == GL_FALSE) {
-        GLint len;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH , &len);
-        
-        getCompilerLog(shader, len, true);
-
-    }
-}
-
-void checkProgram(GLuint program)
-{
-	GLint linked;
-    glGetProgramiv( program, GL_LINK_STATUS, &linked );	
-    //CHECK_GL_ERROR(); 
-
-    if(linked == GL_FALSE) {
-        GLint len;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH , &len);
-        getCompilerLog(program, len, false);
-    }
-
-
-}
-
-
 // ogl vertex buffers
 float vtx[] = {-1.0f,-1.0f,
                 1.0f,-1.0f,
@@ -248,19 +190,16 @@ void initGL()
     GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vCode, NULL);
     glCompileShader(vertex);
-    checkShader(vertex);
 
     const char *fCode = FRAGMENT_CODE;
     GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fCode, NULL);
     glCompileShader(fragment);
-    checkShader(fragment);
 
     program = glCreateProgram();
     glAttachShader(program, vertex);
     glAttachShader(program, fragment);
     glLinkProgram(program);
-    checkProgram(program);
 
     glDeleteShader(vertex);
     glDeleteShader(fragment);
