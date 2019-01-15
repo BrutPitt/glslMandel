@@ -29,7 +29,7 @@ Simple version: https://michelemorrone.eu/WebGL/glslMandel/Mandel.html
 
 More complex with logarithmic smooth coloring: https://michelemorrone.eu/WebGL/glslMandelColor/Mandel.html
 
-![](https://raw.githubusercontent.com/BrutPitt/glChAoS.P/master/screenShots/Mandel.jpg)
+![](https://raw.githubusercontent.com/BrutPitt/glslMandel/master/screenShots/Mandel.jpg)
 
 To run need a browser that have **WebGL2** & **WebAssembly** features.
 Currently only FireFox or Chromium based browser (Chrome, Opera, Vivaldi, etc) supports it, in case of problems check for latest version or download a portable version.
