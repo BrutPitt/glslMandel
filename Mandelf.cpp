@@ -16,7 +16,7 @@
 "#else                                     \n"\
 "out gl_PerVertex                          \n"\
 "{                                         \n"\
-"	vec4 gl_Position;                      \n"\
+"    vec4 gl_Position;                     \n"\
 "};                                        \n"\
 "#endif                                    \n"\
 "                                          \n"\
