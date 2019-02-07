@@ -10,111 +10,113 @@
 #endif
 
 #define VERTEX_CODE GLSL_VERSION\
-"layout (location = 2) in vec2 vPos;       \n"\
-"                                          \n"\
-"#ifdef GL_ES                              \n"\
-"#else                                     \n"\
-"out gl_PerVertex                          \n"\
-"{                                         \n"\
-"   vec4 gl_Position;                      \n"\
-"};                                        \n"\
-"#endif                                    \n"\
-"                                          \n"\
-"void main(void)                           \n"\
-"{                                         \n"\
-"    gl_Position = vec4(vPos.xy,.0f,1.f);  \n"\
-"                                          \n"\
-"}                                         \n"
+"\
+layout (location = 2) in vec2 vPos;       \n\
+                                          \n\
+#ifdef GL_ES                              \n\
+#else                                     \n\
+out gl_PerVertex                          \n\
+{                                         \n\
+   vec4 gl_Position;                      \n\
+};                                        \n\
+#endif                                    \n\
+                                          \n\
+void main(void)                           \n\
+{                                         \n\
+    gl_Position = vec4(vPos.xy,.0f,1.f);  \n\
+                                          \n\
+}                                         \n\
+"
 
 #define FRAGMENT_CODE GLSL_VERSION\
-"#ifdef GL_ES                                                             \n"\
-"precision highp float;                                                   \n"\
-"#endif                                                                   \n"\
-"uniform vec2 wSize;                                                      \n"\
-"                                                                         \n"\
-"uniform dvec2 mScale;                                                    \n"\
-"uniform dvec2 mTransp;                                                   \n"\
-"                                                                         \n"\
-"out vec4 color;                                                          \n"\
-"                                                                         \n"\
-"const int iterations = 512;                                              \n"\
-"                                                                         \n"\
-"#define M_PI 3.1415926535897932384626433832795                                         \n"\
-"                                                                                       \n"\
-"const float sqrBailoutRadius = 1.0E30; // (square of the bail-out radius)              \n"\
-"                                                                                       \n"\
-"                                                                                       \n"\
-"float sh(float x)                                                                      \n"\
-"{                                                                                      \n"\
-"    return (exp(x)-exp(-x))/2.0;                                                       \n"\
-"}                                                                                      \n"\
-"float ch(float x)                                                                      \n"\
-"{                                                                                      \n"\
-"    return (exp(x)+exp(-x))/2.0;                                                       \n"\
-"}                                                                                      \n"\
-"                                                                                       \n"\
-"vec3 colorFunc(float iter, float zx)                                                   \n"\
-"{                                                                                      \n"\
-"vec3 abcVec = vec3(105.0, 125.0, 5.0);	                                                \n"\
-"float rmaj = 122.0;                                                                     \n"\
-"float rmin = 317.0;                                                                     \n"\
-"float g = 33.0; //+180.; invert r <-> b ... whit q                                     \n"\
-"float h = -33.0;                                                                       \n"\
-"float q = 28.79;//+270.;                                                               \n"\
-"float uK = log(log(sqrBailoutRadius));                                                 \n"\
-"float Iter = 256.0;                                                                    \n"\
-"	                                                                                    \n"\
-"float pi=M_PI;                                                                         \n"\
-"	                                                                                    \n"\
-"float vK = 1.0/log(2.0); // (2 is the degree of the rational function)                   \n"\
-"float dens = 25.0;  // (density of the colours)                                          \n"\
-"float disp = 315.0; // (displacement of the colour scale)                              \n"\
-"                                                                                       \n"\
-"vec3 uvwVec = vec3(cos(g * pi / 180.) * cos(h * pi / 180.),                            \n"\
-"		           cos(g * pi / 180.) * sin(h * pi / 180.),                             \n"\
-"		           sin(g * pi / 180.));                                                 \n"\
-"	                                                                                    \n"\
-"vec3 xyzVec = vec3(-abcVec.xy, (abcVec.x * uvwVec.x + abcVec.y * uvwVec.y) / uvwVec.z);\n"\
-"	                                                                                    \n"\
-"vec3 sqrV = xyzVec*xyzVec;                                                             \n"\
-"	                                                                                    \n"\
-"vec3 xyz1Vec = xyzVec/sqrt(sqrV.x + sqrV.y + sqrV.z);	                                \n"\
-"	                                                                                    \n"\
-"vec3 xyz2Vec = vec3(uvwVec.y*xyz1Vec.z - uvwVec.z*xyz1Vec.y,                           \n"\
-"		            uvwVec.z*xyz1Vec.x - uvwVec.x*xyz1Vec.z,                            \n"\
-"		            uvwVec.x*xyz1Vec.y - uvwVec.y*xyz1Vec.x);                           \n"\
-"                                                                                       \n"\
-"    xyz1Vec = xyz1Vec * cos(q * pi / 180.) + xyz2Vec * sin(q * pi / 180.);             \n"\
-"                                                                                       \n"\
-"    xyz2Vec = vec3(uvwVec.y*xyz1Vec.z - uvwVec.z*xyz1Vec.y,                            \n"\
-"                   uvwVec.z*xyz1Vec.x - uvwVec.x*xyz1Vec.z,                            \n"\
-"		           uvwVec.x*xyz1Vec.y - uvwVec.y*xyz1Vec.x);                            \n"\
-"                                                                                       \n"\
-"    //float s = (720./float(iterations)) * iter - vK * (log(log(zx)) + uK);            \n"\
-"	float s = iter - vK * (log(log(zx)) + uK);                                          \n"\
-"    float n = dens * s + disp; // mod 720                                              \n"\
-"                                                                                       \n"\
-"    float e = rmaj * cos(n * pi / 360.);                                               \n"\
-"    float f = rmin * sin(n * pi / 360.);                                               \n"\
-"                                                                                       \n"\
-"    vec3 col = abcVec + e*xyz1Vec + f*xyz2Vec;                                         \n"\
-"                                                                                       \n"\
-"    return col/float(Iter);                                                            \n"\
-"}                                                                                      \n"\
-"                                                                         \n"\
-"void main ()                                                             \n"\
-"{                                                                        \n"\
-"    dvec2 c = (mTransp - mScale) + gl_FragCoord.xy/wSize * (mScale*2.0); \n"\
-"    dvec2 z = vec2(0.0);                                                 \n"\
-"    float clr=0.0;                                                       \n"\
-"                                                                         \n"\
-"    for(int i=0; i < iterations ; i++) {                                 \n"\
-"        z = dvec2(z.x*z.x - z.y*z.y, 2.0*z.x*z.y) + c;                   \n"\
-"        if (dot(z, z) > 64.0) { clr=float(i); break; }                   \n"\
-"    }	                                                                  \n"\
-"   vec2 fZ = vec2(z);                                                          \n"\
-"   color = vec4(colorFunc(clr, dot(fZ,fZ)),1.0);                         \n"\
-"}                                                                        \n"\
+"\
+#ifdef GL_ES                                                             \n\
+precision highp float;                                                   \n\
+#endif                                                                   \n\
+uniform vec2 wSize;                                                      \n\
+                                                                         \n\
+uniform dvec2 mScale;                                                    \n\
+uniform dvec2 mTransp;                                                   \n\
+                                                                         \n\
+out vec4 color;                                                          \n\
+                                                                         \n\
+const int iterations = 512;                                              \n\
+                                                                         \n\
+#define M_PI 3.1415926535897932384626433832795                                         \n\
+                                                                                       \n\
+const float sqrBailoutRadius = 1.0E30; // (square of the bail-out radius)              \n\
+                                                                                       \n\
+                                                                                       \n\
+float sh(float x)                                                                      \n\
+{                                                                                      \n\
+    return (exp(x)-exp(-x))/2.0;                                                       \n\
+}                                                                                      \n\
+float ch(float x)                                                                      \n\
+{                                                                                      \n\
+    return (exp(x)+exp(-x))/2.0;                                                       \n\
+}                                                                                      \n\
+                                                                                       \n\
+vec3 colorFunc(float iter, float zx)                                                   \n\
+{                                                                                      \n\
+vec3 abcVec = vec3(105.0, 125.0, 5.0);	                                               \n\
+float rmaj = 122.0;                                                                    \n\
+float rmin = 317.0;                                                                    \n\
+float g = 33.0; //+180.; invert r <-> b ... whit q                                     \n\
+float h = -33.0;                                                                       \n\
+float q = 28.79;//+270.;                                                               \n\
+float uK = log(log(sqrBailoutRadius));                                                 \n\
+float Iter = 256.0;                                                                    \n\
+	                                                                                   \n\
+float pi=M_PI;                                                                         \n\
+	                                                                                   \n\
+float vK = 1.0/log(2.0); // (2 is the degree of the rational function)                 \n\
+float dens = 25.0;  // (density of the colours)                                        \n\
+float disp = 315.0; // (displacement of the colour scale)                              \n\
+                                                                                       \n\
+vec3 uvwVec = vec3(cos(g * pi / 180.) * cos(h * pi / 180.),                            \n\
+		           cos(g * pi / 180.) * sin(h * pi / 180.),                            \n\
+		           sin(g * pi / 180.));                                                \n\
+	                                                                                   \n\
+	                                                                                   \n\
+vec3 v1 = normalize(vec3(-abcVec.xy,                                                   \n\
+                    (abcVec.x * uvwVec.x + abcVec.y * uvwVec.y) / uvwVec.z));          \n\
+                                                                                       \n\
+vec3 v2 = vec3(uvwVec.y*v1.z - uvwVec.z*v1.y,                                          \n\
+		       uvwVec.z*v1.x - uvwVec.x*v1.z,                                          \n\
+		       uvwVec.x*v1.y - uvwVec.y*v1.x);                                         \n\
+                                                                                       \n\
+    v1 = v1 * cos(q * pi / 180.) + v2 * sin(q * pi / 180.);                            \n\
+                                                                                       \n\
+    v2 = vec3(uvwVec.y*v1.z - uvwVec.z*v1.y,                                           \n\
+              uvwVec.z*v1.x - uvwVec.x*v1.z,                                           \n\
+		      uvwVec.x*v1.y - uvwVec.y*v1.x);                                          \n\
+                                                                                       \n\
+    //float s = (720./float(iterations)) * iter - vK * (log(log(zx)) + uK);            \n\
+	float s = iter - vK * (log(log(zx)) + uK);                                         \n\
+    float n = dens * s + disp; // mod 720                                              \n\
+                                                                                       \n\
+    float e = rmaj * cos(n * pi / 360.);                                               \n\
+    float f = rmin * sin(n * pi / 360.);                                               \n\
+                                                                                       \n\
+    vec3 col = abcVec + e*v1 + f*v2;                                                   \n\
+                                                                                       \n\
+    return col/float(Iter);                                                            \n\
+}                                                                                      \n\
+                                                                         \n\
+void main ()                                                             \n\
+{                                                                        \n\
+    dvec2 c = (mTransp - mScale) + gl_FragCoord.xy/wSize * (mScale*2.0); \n\
+    dvec2 z = vec2(0.0);                                                 \n\
+    float clr=0.0;                                                       \n\
+                                                                         \n\
+    for(int i=0; i < iterations ; i++) {                                 \n\
+        z = dvec2(z.x*z.x - z.y*z.y, 2.0*z.x*z.y) + c;                   \n\
+        if (dot(z, z) > 64.0) { clr=float(i); break; }                   \n\
+    }	                                                                 \n\
+   vec2 fZ = vec2(z);                                                    \n\
+   color = vec4(colorFunc(clr, dot(fZ,fZ)),1.0);                         \n\
+}                                                                        \n\
+"
 
 // ogl vertex buffers
 float vtx[] = {-1.0f,-1.0f,
