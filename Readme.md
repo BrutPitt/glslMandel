@@ -11,7 +11,7 @@ To build need to have GLFW library (binary and devel)
 
 Files, all files, have extension `.cpp` but are written in `C`
 
-To build use
+To build use:
 
 `gcc -I. -lglfw -ld -lGL Mandel[d|f].cpp glad/glad.cpp`
 
