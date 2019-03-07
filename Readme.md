@@ -21,7 +21,7 @@ or
 
 For **OS X** users, need to add `-D_OPENGL_4_1_` flag (OS X do not supports OpenGL 4.5)
 
-**Windows** users can use the VisualStudio project attached
+**Windows** users can use the VisualStudio project attached.
 
 Live/online **WebGL 2** & **WebAssembly** versions available
 
